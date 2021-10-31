@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
@@ -20,7 +20,7 @@ const LoginForm = () => {
     }
   }, [error]);
 
-  const handleInputChange = (event) => {
+  function handleInputChange (event) {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
@@ -44,10 +44,12 @@ const LoginForm = () => {
       Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
+      setShowAlert(true);
     }
 
     // clear form values
     setUserFormData({
+      username: '',
       email: '',
       password: '',
     });
